@@ -3,7 +3,7 @@ import numpy as np
 from scipy.fftpack import fft
 
 
-N_sample = 2000
+N_sample = 750
 L = 1500#Length of the signal
 t = np.linspace(0, L/N_sample, num=L)
 y_original = 0.7*np.sin(2 * np.pi * 50*t) + np.sin(2 * np.pi * 120*t)
