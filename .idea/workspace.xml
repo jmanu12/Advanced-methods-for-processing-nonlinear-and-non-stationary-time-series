@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3dee5af3-202c-4571-8f2f-9f4858e13655" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/STFT.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CWT.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FFT.py" beforeDir="false" afterPath="$PROJECT_DIR$/FFT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STFT.py" beforeDir="false" afterPath="$PROJECT_DIR$/STFT.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +25,7 @@
   <component name="ProjectId" id="1RTEcglpfC8glBNbnIJUeRUhguJ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/STFT.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/CWT.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -53,7 +53,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/STFT.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CWT.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />

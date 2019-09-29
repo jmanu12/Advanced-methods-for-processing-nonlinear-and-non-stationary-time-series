@@ -5,7 +5,7 @@ import matplotlib.pyplot as plot
 import numpy as np
 
 """
-SFTP of cosine time-series, 
+SFTT of cosine time-series, 
 
 """
 f1 = 200 #signal frecuency
