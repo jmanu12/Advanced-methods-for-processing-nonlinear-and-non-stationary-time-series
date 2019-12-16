@@ -1,6 +1,8 @@
 import struct
 
 import numpy as np
+from waipy import fft
+
 
 class ReadECG:
     """
@@ -25,6 +27,7 @@ class ReadECG:
     %   plot the signals having a time reference.
     %
     """
+
     def __init__(self):
         print("ReadECG")
 
@@ -57,121 +60,82 @@ class PlotECG():
 
         box = dict(facecolor='gray', pad=5, alpha=0.2)
 
-        fig = plt.figure()
-        # DI
+        fig, axs = plt.subplots(4, 2, facecolor='w', edgecolor='k')
 
-        ax1 = plt.subplot(421)
-        ax1.plot(t,data[0][:],color = "black")
-        #plt.title('DI');
-        ax1.set_ylabel('CHANNEL 1 - DI',bbox=box);
-        ax1.grid(False)
-
-
-        # DII
-        ax2 = plt.subplot(422)
-        plt.plot(t,data[1][:],color = "black")
-        #plt.title('DII');
-        plt.ylabel('CHANNEL 2 - DII',bbox=box);
-        plt.grid(False)
-
-        # V1
-        ax3 = plt.subplot(423)
-        ax3.plot(t,data[2][:],color = "black")
-        #plt.title('V1');
-        ax3.set_ylabel('CHANNEL 3 - V1',bbox=box);
-        ax3.grid(False)
-
-
-        # V2
-        ax4 = plt.subplot(424)
-        plt.plot(t,data[3][:],color = "black")
-        #plt.title('V2');
-        plt.ylabel('CHANNEL 4 - V2',bbox=box);
-        plt.grid(False)
-
-        # V3
-        ax5 = plt.subplot(425)
-        ax5.plot(t, data[4][:], color="black")
-        #plt.title('V3');
-        ax5.set_ylabel('CHANNEL 5 - V3',bbox=box);
-        ax5.grid(False)
-
-
-        # V4
-        ax6 = plt.subplot(426)
-        plt.plot(t, data[5][:], color="black")
-        #plt.title('V4');
-        plt.ylabel('CHANNEL 6 - V4',bbox=box);
-        plt.grid(False)
-
-        # V5
-        ax7 = plt.subplot(427)
-        ax7.plot(t, data[6][:], color="black")
-        #plt.title('V5');
-        ax7.set_ylabel('CHANNEL 7 - V5',bbox=box);
-        ax7.grid(False)
-
-
-        # V6
-        ax8 = plt.subplot(428)
-        plt.plot(t, data[7][:], color="black")
-        plt.grid(False)
-        plt.ylabel('CHANNEL 8 - V6', bbox=box);
-        #plt.title('V6');
+        axs = axs.ravel()
+        for i in range(8):
+            if i == 0:
+                axs[i].set_ylabel('CHANNEL 1 - DI', bbox=box);
+            # DII
+            if i == 1:
+                axs[i].set_ylabel('CHANNEL 2 - DII', bbox=box);
+            # VI
+            if i == 2:
+                axs[i].set_ylabel('CHANNEL 3 - VI', bbox=box);
+            # V2
+            if i == 3:
+                axs[i].set_ylabel('CHANNEL 4 - V2', bbox=box);
+            # V3
+            if i == 4:
+                axs[i].set_ylabel('CHANNEL 5 - V3', bbox=box);
+            if i == 5:
+                axs[i].set_ylabel('CHANNEL 6 - V4', bbox=box);
+            if i == 6:
+                axs[i].set_ylabel('CHANNEL 7 - V7', bbox=box);
+            if i == 7:
+                axs[i].set_ylabel('CHANNEL 8 - V8', bbox=box);
+            axs[i].plot(t, data[0][:], color="black")
         fig.align_labels()
-
         plt.show()
 
     @staticmethod
     def plot_channels_RR_series(data, t, annotation):
         import matplotlib.pyplot as plt
         from matplotlib.legend_handler import HandlerLine2D, HandlerTuple
-        xlim1 = t[20000];
-        xlim2 = t[25000];
+        xlim1 = t[10000];
+        xlim2 = t[11000];
         box = dict(facecolor='gray', pad=5, alpha=0.2);
 
         fig = plt.figure()
         # DI
 
         ax1 = plt.subplot(421)
-        line1, = ax1.plot(t,data[0][:],color = "black")
-        line2, = ax1.plot(t[annotation[0][:]], data[0][:][annotation[0][:]],'X', color='red')
+        line1, = ax1.plot(t, data[0][:], color="black")
+        line2, = ax1.plot(t[annotation[0][:]], data[0][:][annotation[0][:]], 'X', color='red')
         plt.legend([(line2)], ['R-detection'], numpoints=1,
-               handler_map={tuple: HandlerTuple(ndivide=None)})
-        #plt.title('DI');
-        ax1.set_ylabel('CHANNEL 1 - DI',bbox=box);
-        plt.xlim(xlim1,xlim2);
+                   handler_map={tuple: HandlerTuple(ndivide=None)})
+        # plt.title('DI');
+        ax1.set_ylabel('CHANNEL 1 - DI', bbox=box);
+        plt.xlim(xlim1, xlim2);
         plt.ylim(-200, 200);
         ax1.grid(False)
 
-
         # DII
         ax2 = plt.subplot(422)
-        plt.plot(t,data[1][:],color = "black")
+        plt.plot(t, data[1][:], color="black")
         plt.plot(t[annotation[1][:]], data[1][:][annotation[1][:]], 'X', color='red')
-        #plt.title('DII');
-        plt.ylabel('CHANNEL 2 - DII',bbox=box);
-        plt.xlim(xlim1,xlim2);
+        # plt.title('DII');
+        plt.ylabel('CHANNEL 2 - DII', bbox=box);
+        plt.xlim(xlim1, xlim2);
         plt.ylim(-200, 300);
         plt.grid(False)
 
         # V1
         ax3 = plt.subplot(423)
-        ax3.plot(t,data[2][:],color = "black")
+        ax3.plot(t, data[2][:], color="black")
         ax3.plot(t[annotation[2][:]], data[2][:][annotation[2][:]], 'X', color='red')
-        #plt.title('V1');
-        ax3.set_ylabel('CHANNEL 3 - V1',bbox=box);
+        # plt.title('V1');
+        ax3.set_ylabel('CHANNEL 3 - V1', bbox=box);
         plt.xlim(xlim1, xlim2);
         plt.ylim(-200, 200);
         ax3.grid(False)
 
-
         # V2
         ax4 = plt.subplot(424)
-        plt.plot(t,data[3][:],color = "black")
+        plt.plot(t, data[3][:], color="black")
         plt.plot(t[annotation[3][:]], data[3][:][annotation[3][:]], 'X', color='red')
-        #plt.title('V2');
-        plt.ylabel('CHANNEL 4 - V2',bbox=box);
+        # plt.title('V2');
+        plt.ylabel('CHANNEL 4 - V2', bbox=box);
         plt.xlim(xlim1, xlim2);
         plt.ylim(-200, 200);
         plt.grid(False)
@@ -180,19 +144,18 @@ class PlotECG():
         ax5 = plt.subplot(425)
         ax5.plot(t, data[4][:], color="black")
         ax5.plot(t[annotation[4][:]], data[4][:][annotation[4][:]], 'X', color='red')
-        #plt.title('V3');
-        ax5.set_ylabel('CHANNEL 5 - V3',bbox=box);
+        # plt.title('V3');
+        ax5.set_ylabel('CHANNEL 5 - V3', bbox=box);
         plt.xlim(xlim1, xlim2);
         plt.ylim(-200, 200);
         ax5.grid(False)
-
 
         # V4
         ax6 = plt.subplot(426)
         plt.plot(t, data[5][:], color="black")
         plt.plot(t[annotation[5][:]], data[5][:][annotation[5][:]], 'X', color='red')
-        #plt.title('V4');
-        plt.ylabel('CHANNEL 6 - V4',bbox=box);
+        # plt.title('V4');
+        plt.ylabel('CHANNEL 6 - V4', bbox=box);
         plt.xlim(xlim1, xlim2);
         plt.ylim(-200, 200);
         plt.grid(False)
@@ -201,12 +164,11 @@ class PlotECG():
         ax7 = plt.subplot(427)
         ax7.plot(t, data[6][:], color="black")
         ax7.plot(t[annotation[6][:]], data[6][:][annotation[6][:]], 'X', color='red')
-        #plt.title('V5');
-        ax7.set_ylabel('CHANNEL 7 - V5',bbox=box);
+        # plt.title('V5');
+        ax7.set_ylabel('CHANNEL 7 - V5', bbox=box);
         plt.xlim(xlim1, xlim2);
         plt.ylim(-200, 200);
         ax7.grid(False)
-
 
         # V6
         ax8 = plt.subplot(428)
@@ -216,10 +178,10 @@ class PlotECG():
         plt.ylabel('CHANNEL 8 - V6', bbox=box);
         plt.xlim(xlim1, xlim2);
         plt.ylim(-200, 200);
-        #plt.title('V6');
+        # plt.title('V6');
         fig.align_labels()
-
         plt.show()
+
 
 class ECGDetectors:
 
@@ -229,11 +191,10 @@ class ECGDetectors:
         detectors = Detectors(500)
         annotation = []
 
-        for i in range(0,8):
+        for i in range(0, 8):
             annotation.append(detectors.pan_tompkins_detector(signal[i][:]))
 
-
-        #annotation.append(detectors.pan_tompkins_detector(signal[1][:]))
+        # annotation.append(detectors.pan_tompkins_detector(signal[1][:]))
         return annotation;
 
     @staticmethod
@@ -248,10 +209,11 @@ class ECGDetectors:
         # annotation.append(detectors.pan_tompkins_detector(signal[1][:]))
         return annotation;
 
+
 class WaveletAnalysis:
 
     @staticmethod
-    def emdT(signal,t):
+    def emdT(signal, t):
         from PyEMD import EEMD
         import numpy as np
         import pylab as plt
@@ -293,7 +255,7 @@ class WaveletAnalysis:
 
     @staticmethod
     def cwt(signal, t, obspy=None):
-        #from __future__ import division
+        # from __future__ import division
         import numpy
         from matplotlib import pyplot
 
@@ -311,7 +273,7 @@ class WaveletAnalysis:
 
         N = signal.shape[0]
         print(N)
-        p = numpy.polyfit(t , signal, 1)
+        p = numpy.polyfit(t, signal, 1)
         dat_notrend = signal - numpy.polyval(p, t)
         std = dat_notrend.std()  # Standard deviation
         var = std ** 2  # Variance
@@ -329,7 +291,7 @@ class WaveletAnalysis:
 
         power = (numpy.abs(wave)) ** 2
         fft_power = numpy.abs(fft) ** 2
-        period = 1/freqs
+        period = 1 / freqs
 
         power /= scales[:, None]
 
@@ -418,8 +380,67 @@ class WaveletAnalysis:
 
         pyplot.show()
 
+    @staticmethod
+    def dwtLowPassFilter(signal, thresh=0.63, wavelet="db4"):
+        thresh = thresh * np.nanmax(signal)
+        coeff = pywt.wavedec(signal, wavelet, mode="per")
+        coeff[1:] = (pywt.threshold(i, value=thresh, mode="soft") for i in coeff[1:])
+        reconstructed_signal = pywt.waverec(coeff, wavelet, mode="per")
+
+        fig, ax = plt.subplots(figsize=(12, 8))
+        ax.plot(signal, color="b", alpha=0.5, label='original signal')
+
+        ax.plot(reconstructed_signal, 'k', label='DWT smoothing}', linewidth=2)
+        ax.legend()
+        ax.set_title('Removing High Frequency Noise with DWT', fontsize=18)
+        ax.set_ylabel('Signal Amplitude', fontsize=16)
+        ax.set_xlabel('Sample No', fontsize=16)
+        plt.show()
+
+        return reconstructed_signal
 
 
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import pywt
+
+data = ReadECG();
+ecg_detectors = ECGDetectors();
+plot = PlotECG()
+
+signal = data.ecg_read("ECG83")
+print(signal.shape)
+t = data.time();
+# detectors
+pan_tompkins = ecg_detectors.pan_tompkins_detector(signal)
+# swt_detector = ecg_detectors.swt_detector(signal)
+#plot.plot_channels_time_series(signal, t)
+wavelet = WaveletAnalysis();
+#wavelet.cwt(signal[1][:],t)
+wavelet.dwtLowPassFilter(signal[1][:], 0.4)
+
+"""
+def lowpassfilter(signal, thresh=0.63, wavelet="db4"):
+    thresh = thresh * np.nanmax(signal)
+    coeff = pywt.wavedec(signal, wavelet, mode="per")
+    coeff[1:] = (pywt.threshold(i, value=thresh, mode="soft") for i in coeff[1:])
+    reconstructed_signal = pywt.waverec(coeff, wavelet, mode="per")
+    return reconstructed_signal
+
+
+fig, ax = plt.subplots(figsize=(12, 8))
+ax.plot(signal, color="b", alpha=0.5, label='original signal')
+rec = lowpassfilter(signal, 0.4)
+ax.plot(rec, 'k', label='DWT smoothing}', linewidth=2)
+ax.legend()
+ax.set_title('Removing High Frequency Noise with DWT', fontsize=18)
+ax.set_ylabel('Signal Amplitude', fontsize=16)
+ax.set_xlabel('Sample No', fontsize=16)
+plt.show()
+"""
+
+"""
 
 data = ReadECG();
 ecg_detectors = ECGDetectors();
@@ -433,13 +454,14 @@ t = data.time();
 #PlotECG.plot_channels_RR_series(signal,t)
 
 #detectors
-pan_tompkins = ecg_detectors.pan_tompkins_detector(signal)
+#pan_tompkins = ecg_detectors.pan_tompkins_detector(signal)
 #swt_detector = ecg_detectors.swt_detector(signal)
-plot.plot_channels_RR_series(signal,t,pan_tompkins)
+#plot.plot_channels_RR_series(signal,t,pan_tompkins)
 
 #EMD
-"""
-wavelet = WaveletAnalysis();
-wavelet.cwt(signal[0][:],t)
-"""
 
+wavelet = WaveletAnalysis();
+#wavelet.cwt(signal[1][:],t)
+wavelet.hibert(signal[1][:],t)
+
+"""
