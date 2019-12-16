@@ -90,6 +90,8 @@ class PlotECG():
 
     @staticmethod
     def plot_channels_RR_series(data, t, annotation):
+
+
         import matplotlib.pyplot as plt
         from matplotlib.legend_handler import HandlerLine2D, HandlerTuple
         xlim1 = t[10000];
@@ -98,6 +100,7 @@ class PlotECG():
 
         fig = plt.figure()
         # DI
+
 
         ax1 = plt.subplot(421)
         line1, = ax1.plot(t, data[0][:], color="black")
@@ -381,23 +384,117 @@ class WaveletAnalysis:
         pyplot.show()
 
     @staticmethod
-    def dwtLowPassFilter(signal, thresh=0.63, wavelet="db4"):
-        thresh = thresh * np.nanmax(signal)
-        coeff = pywt.wavedec(signal, wavelet, mode="per")
-        coeff[1:] = (pywt.threshold(i, value=thresh, mode="soft") for i in coeff[1:])
-        reconstructed_signal = pywt.waverec(coeff, wavelet, mode="per")
+    def dwtLowPassFilter(s, thresh=0.63, wavelet="db4"):
+        fig, axs = plt.subplots(4, 2, facecolor='w', edgecolor='k')
 
-        fig, ax = plt.subplots(figsize=(12, 8))
-        ax.plot(signal, color="b", alpha=0.5, label='original signal')
+        axs = axs.ravel()
+        clean_signal = [];
+        for i in range(8):
 
-        ax.plot(reconstructed_signal, 'k', label='DWT smoothing}', linewidth=2)
-        ax.legend()
-        ax.set_title('Removing High Frequency Noise with DWT', fontsize=18)
-        ax.set_ylabel('Signal Amplitude', fontsize=16)
-        ax.set_xlabel('Sample No', fontsize=16)
+            if i == 0:
+                signal = s[i][:]
+                thresh = thresh * np.nanmax(signal)
+                coeff1 = pywt.wavedec(signal, wavelet, mode="per")
+                coeff1[1:] = (pywt.threshold(k, value=thresh, mode="soft") for k in coeff1[1:])
+                reconstructed_signal1 = pywt.waverec(coeff1, wavelet, mode="per")
+                axs[i].plot(signal, color="b", alpha=0.5, label='original signal')
+                axs[i].plot(reconstructed_signal1, 'k', label='DWT smoothing}', linewidth=2)
+                axs[i].set_ylabel('CHANNEL 1 - DI');
+                clean_signal.append(reconstructed_signal1)
+            # DII
+            if i == 1:
+                signal = s[i][:]
+                thresh2 = 0.63 * np.nanmax(signal)
+                coeff2 = pywt.wavedec(signal, wavelet, mode="per")
+                coeff2[1:] = (pywt.threshold(k, value=thresh2, mode="soft") for k in coeff2[1:])
+                reconstructed_signal2 = pywt.waverec(coeff2, wavelet, mode="per")
+                axs[i].plot(signal, color="b", alpha=0.5, label='original signal')
+                axs[i].plot(reconstructed_signal2, 'k', label='DWT smoothing}', linewidth=2)
+                axs[i].set_ylabel('CHANNEL 2 - DII');
+                clean_signal.append(reconstructed_signal2)
+            # VI
+            if i == 2:
+                signal = s[i][:]
+                thresh3 = 0.63 * np.nanmax(signal)
+                coeff3 = pywt.wavedec(signal, wavelet, mode="per")
+                coeff3[1:] = (pywt.threshold(k, value=thresh3, mode="soft") for k in coeff3[1:])
+                reconstructed_signal3 = pywt.waverec(coeff3, wavelet, mode="per")
+                axs[i].plot(signal, color="b", alpha=0.5, label='original signal')
+                axs[i].plot(reconstructed_signal3, 'k', label='DWT smoothing}', linewidth=2)
+                axs[i].set_ylabel('CHANNEL 3 - VI');
+                clean_signal.append(reconstructed_signal3)
+            # V2
+            if i == 3:
+                signal = s[i][:]
+                thresh4 = 0.63 * np.nanmax(signal)
+                coeff4 = pywt.wavedec(signal, wavelet, mode="per")
+                coeff4[1:] = (pywt.threshold(k, value=thresh4, mode="soft") for k in coeff4[1:])
+                reconstructed_signal4 = pywt.waverec(coeff4, wavelet, mode="per")
+                axs[i].plot(signal, color="b", alpha=0.5, label='original signal')
+                axs[i].plot(reconstructed_signal4, 'k', label='DWT smoothing}', linewidth=2)
+                axs[i].set_ylabel('CHANNEL 4 - V2');
+                clean_signal.append(reconstructed_signal4)
+            # V3
+            if i == 4:
+                signal = s[i][:]
+                thresh5 = 0.63 * np.nanmax(signal)
+                coeff5 = pywt.wavedec(signal, wavelet, mode="per")
+                coeff5[1:] = (pywt.threshold(k, value=thresh5, mode="soft") for k in coeff5[1:])
+                reconstructed_signal5 = pywt.waverec(coeff5, wavelet, mode="per")
+                axs[i].plot(signal, color="b", alpha=0.5, label='original signal')
+                axs[i].plot(reconstructed_signal5, 'k', label='DWT smoothing}', linewidth=2)
+                axs[i].set_ylabel('CHANNEL 5 - V3');
+                clean_signal.append(reconstructed_signal5)
+
+            if i == 5:
+                signal = s[i][:]
+                thresh6 = 0.63 * np.nanmax(signal)
+                coeff6 = pywt.wavedec(signal, wavelet, mode="per")
+                coeff6[1:] = (pywt.threshold(k, value=thresh6, mode="soft") for k in coeff6[1:])
+                reconstructed_signal6 = pywt.waverec(coeff6, wavelet, mode="per")
+                axs[i].plot(signal, color="b", alpha=0.5, label='original signal')
+                axs[i].plot(reconstructed_signal6, 'k', label='DWT smoothing}', linewidth=2)
+                axs[i].set_ylabel('CHANNEL 6 - V4');
+                clean_signal.append(reconstructed_signal6)
+            if i == 6:
+                signal = s[i][:]
+                thresh7 = 0.63 * np.nanmax(signal)
+                coeff7 = pywt.wavedec(signal, wavelet, mode="per")
+                coeff7[1:] = (pywt.threshold(k, value=thresh7, mode="soft") for k in coeff7[1:])
+                reconstructed_signal7 = pywt.waverec(coeff7, wavelet, mode="per")
+                axs[i].plot(signal, color="b", alpha=0.5, label='original signal')
+                axs[i].plot(reconstructed_signal7, 'k', label='DWT smoothing}', linewidth=2)
+                axs[i].set_ylabel('CHANNEL 7 - V7');
+                clean_signal.append(reconstructed_signal7)
+            if i == 7:
+                signal = s[i][:]
+                thresh8 = 0.63 * np.nanmax(signal)
+                coeff8 = pywt.wavedec(signal, wavelet, mode="per")
+                coeff8[1:] = (pywt.threshold(k, value=thresh8, mode="soft") for k in coeff8[1:])
+                reconstructed_signal8 = pywt.waverec(coeff7, wavelet, mode="per")
+                axs[i].plot(signal, color="b", alpha=0.5, label='original signal')
+                axs[i].plot(reconstructed_signal8, 'k', label='DWT smoothing}', linewidth=2)
+                axs[i].set_ylabel('CHANNEL 8 - V8');
+                clean_signal.append(reconstructed_signal8)
+        fig.align_labels()
         plt.show()
+        np.save('clean_signal_DWT.npy', clean_signal)
 
-        return reconstructed_signal
+
+        """
+            fig, ax = plt.subplots(figsize=(12, 8))
+            ax.plot(signal, color="b", alpha=0.5, label='original signal')
+    
+            ax.plot(reconstructed_signal, 'k', label='DWT smoothing}', linewidth=2)
+            ax.legend()
+            ax.set_title('Removing High Frequency Noise with DWT', fontsize=18)
+            ax.set_ylabel('Signal Amplitude', fontsize=16)
+            ax.set_xlabel('Sample No', fontsize=16)
+            plt.show()
+        """
+
+
+
 
 
 
@@ -409,36 +506,17 @@ data = ReadECG();
 ecg_detectors = ECGDetectors();
 plot = PlotECG()
 
-signal = data.ecg_read("ECG83")
-print(signal.shape)
+s = data.ecg_read("ECG83")
+#print(signal.shape)
 t = data.time();
+
+
 # detectors
-pan_tompkins = ecg_detectors.pan_tompkins_detector(signal)
+#pan_tompkins = ecg_detectors.pan_tompkins_detector(signal)
 # swt_detector = ecg_detectors.swt_detector(signal)
-#plot.plot_channels_time_series(signal, t)
+#plot.plot_channels_RR_series(signal, t, pan_tompkins)
 wavelet = WaveletAnalysis();
 #wavelet.cwt(signal[1][:],t)
-wavelet.dwtLowPassFilter(signal[1][:], 0.4)
-
-"""
-def lowpassfilter(signal, thresh=0.63, wavelet="db4"):
-    thresh = thresh * np.nanmax(signal)
-    coeff = pywt.wavedec(signal, wavelet, mode="per")
-    coeff[1:] = (pywt.threshold(i, value=thresh, mode="soft") for i in coeff[1:])
-    reconstructed_signal = pywt.waverec(coeff, wavelet, mode="per")
-    return reconstructed_signal
-
-
-fig, ax = plt.subplots(figsize=(12, 8))
-ax.plot(signal, color="b", alpha=0.5, label='original signal')
-rec = lowpassfilter(signal, 0.4)
-ax.plot(rec, 'k', label='DWT smoothing}', linewidth=2)
-ax.legend()
-ax.set_title('Removing High Frequency Noise with DWT', fontsize=18)
-ax.set_ylabel('Signal Amplitude', fontsize=16)
-ax.set_xlabel('Sample No', fontsize=16)
-plt.show()
-"""
 
 """
 
@@ -450,6 +528,8 @@ plot = PlotECG()
 signal = data.ecg_read("ECG83")
 print(signal.shape)
 t = data.time();
+"""
+
 
 #PlotECG.plot_channels_RR_series(signal,t)
 
@@ -459,6 +539,7 @@ t = data.time();
 #plot.plot_channels_RR_series(signal,t,pan_tompkins)
 
 #EMD
+"""
 
 wavelet = WaveletAnalysis();
 #wavelet.cwt(signal[1][:],t)
